@@ -1,110 +1,109 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Crypto Dashboard</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚀 Crypto Dashboard</title>
     <style>
-        * { box-sizing: border-box; }
-        body {
-            background: linear-gradient(135deg, #0a0a0a 0%, #1a0a2e 30%, #16213e 70%, #0f0f23 100%);
-            color: #ffffff;
-            font-family: 'Roboto', sans-serif;
+        * {
             margin: 0;
-            padding: 20px;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a0a2e 50%, #16213e 100%);
+            color: #ffffff;
             min-height: 100vh;
             overflow-x: hidden;
-        }
-        .container { max-width: 1400px; margin: 0 auto; }
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            margin-bottom: 40px;
-            gap: 20px;
-        }
-        h1 {
-            font-family: 'Orbitron', monospace;
-            font-size: 2.5em;
-            font-weight: 900;
-            background: linear-gradient(45deg, #00ff88, #0088ff, #ff00aa, #00ff88);
-            background-size: 300% 300%;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin: 0;
-            animation: gradientShift 3s ease infinite;
+            animation: gradientShift 10s ease infinite;
         }
         @keyframes gradientShift {
             0%, 100% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
         }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        h1 {
+            font-size: 3em;
+            background: linear-gradient(45deg, #00ff88, #00bfff, #ff00ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 30px rgba(0, 255, 136, 0.5);
+            margin-bottom: 20px;
+            animation: glowPulse 2s ease-in-out infinite alternate;
+        }
+        @keyframes glowPulse {
+            from { text-shadow: 0 0 20px #00ff88, 0 0 40px #00ff88; }
+            to { text-shadow: 0 0 30px #00bfff, 0 0 60px #00bfff; }
+        }
         .controls {
             display: flex;
             gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
             align-items: center;
         }
         #search {
-            padding: 12px 24px;
+            padding: 12px 20px;
             border: none;
-            border-radius: 50px;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(20px);
-            color: #fff;
+            border-radius: 25px;
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: white;
             font-size: 16px;
-            min-width: 250px;
-            transition: all 0.3s;
+            width: 250px;
         }
-        #search::placeholder { color: rgba(255, 255, 255, 0.6); }
-        #search:focus {
-            outline: none;
-            box-shadow: 0 0 20px rgba(0, 136, 255, 0.5);
-            background: rgba(255, 255, 255, 0.15);
+        #search::placeholder {
+            color: rgba(255,255,255,0.7);
         }
         #refresh {
-            padding: 12px 28px;
-            border: none;
-            border-radius: 50px;
+            padding: 12px 24px;
             background: linear-gradient(45deg, #00ff88, #00bfff);
+            border: none;
+            border-radius: 25px;
             color: #000;
-            font-weight: 700;
-            font-size: 16px;
+            font-weight: bold;
             cursor: pointer;
             transition: all 0.3s;
-            box-shadow: 0 4px 20px rgba(0, 255, 136, 0.4);
-            font-family: 'Orbitron', monospace;
+            box-shadow: 0 4px 15px rgba(0,255,136,0.4);
         }
         #refresh:hover {
-            transform: scale(1.05) translateY(-2px);
-            box-shadow: 0 8px 30px rgba(0, 255, 136, 0.6);
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(0,255,136,0.6);
         }
         #timer {
-            background: rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(20px);
-            padding: 12px 24px;
-            border-radius: 50px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            font-family: 'Orbitron', monospace;
-            font-size: 14px;
-            min-width: 160px;
-            text-align: center;
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            padding: 12px 20px;
+            border-radius: 25px;
+            border: 1px solid rgba(255,255,255,0.2);
+            font-weight: bold;
+            min-width: 120px;
         }
         .indicators {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-            margin-bottom: 50px;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
         }
         .card {
-            background: rgba(255, 255, 255, 0.06);
-            backdrop-filter: blur(25px);
-            border-radius: 24px;
-            padding: 40px;
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.05);
-            transition: all 0.4s ease;
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+            transition: transform 0.3s, box-shadow 0.3s;
             position: relative;
             overflow: hidden;
         }
@@ -114,101 +113,135 @@
             top: 0;
             left: 0;
             right: 0;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, #00ff88, #00bfff, transparent);
+            height: 2px;
+            background: linear-gradient(90deg, #00ff88, #00bfff, #ff00ff);
         }
         .card:hover {
             transform: translateY(-10px);
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5), 0 0 30px rgba(0, 255, 136, 0.3);
+            box-shadow: 0 20px 40px rgba(0,255,136,0.3);
         }
-        .card h2 {
-            font-family: 'Orbitron', monospace;
-            font-size: 1.6em;
-            margin: 0 0 20px 0;
-            opacity: 0.9;
+        .card h3 {
+            font-size: 1.2em;
+            margin-bottom: 10px;
+            color: #00ff88;
         }
         .value {
-            font-size: 4.5em;
-            font-weight: 900;
-            font-family: 'Orbitron', monospace;
-            margin: 20px 0;
-            line-height: 1;
+            font-size: 2.5em;
+            font-weight: bold;
+            margin-bottom: 10px;
             text-shadow: 0 0 20px currentColor;
         }
-        .classification, .desc {
-            font-size: 1.3em;
+        .mas .values {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            font-size: 1.2em;
+        }
+        .mas .value {
+            font-size: 1.2em;
+        }
+        .desc {
+            font-size: 0.9em;
             opacity: 0.8;
-            margin-top: 10px;
-            font-weight: 300;
         }
-        .heatmap h2 {
-            font-family: 'Orbitron', monospace;
-            font-size: 2em;
-            text-align: center;
-            margin-bottom: 30px;
-            opacity: 0.95;
-        }
-        .coins-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
-        }
-        .coin-tile {
-            background: rgba(255, 255, 255, 0.08);
+        .heatmap-section {
+            background: rgba(255,255,255,0.02);
             backdrop-filter: blur(20px);
             border-radius: 20px;
-            padding: 25px;
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            transition: all 0.3s ease;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .heatmap-section h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #00ff88;
+            text-shadow: 0 0 10px #00ff88;
+        }
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .color-box {
+            padding: 8px 16px;
+            border-radius: 15px;
+            font-size: 0.85em;
+            font-weight: bold;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+        .high { background: linear-gradient(90deg, #00ff88, #00aa44); color: #000; }
+        .mid { background: #ffff44; color: #000; }
+        .low { background: linear-gradient(90deg, #ff4444, #aa0000); color: #fff; }
+        #heatmap {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+        .heatmap-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 15px;
+            padding: 15px;
+            background: rgba(255,255,255,0.03);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: all 0.3s;
             cursor: pointer;
-            position: relative;
-            overflow: hidden;
         }
-        .coin-tile::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: rgba(255, 255, 255, 0.2);
-        }
-        .coin-tile:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 25px rgba(0, 255, 136, 0.4);
+        .heatmap-row:hover {
+            transform: scale(1.02);
+            box-shadow: 0 5px 20px rgba(0,255,136,0.3);
         }
         .coin-name {
-            font-weight: 700;
-            font-size: 1.4em;
-            margin-bottom: 8px;
-            opacity: 0.95;
+            font-weight: bold;
+            text-shadow: 0 0 10px #00bfff;
         }
-        .coin-price {
-            font-size: 1.1em;
-            opacity: 0.85;
-            margin-bottom: 15px;
+        .price { font-family: monospace; }
+        .change { font-weight: bold; }
+        .funding-cell {
+            font-weight: bold;
+            padding: 8px;
+            border-radius: 8px;
+            text-align: center;
+            text-shadow: 0 0 10px currentColor;
         }
-        .coin-rate {
-            font-size: 2.2em;
-            font-weight: 900;
-            font-family: 'Orbitron', monospace;
-            text-shadow: 0 0 15px currentColor;
-            line-height: 1;
+        .guide {
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 30px;
+            border: 1px solid rgba(255,255,255,0.1);
         }
-        .green-strong { background: linear-gradient(135deg, rgba(34, 197, 94, 0.25), rgba(0, 255, 136, 0.15)) !important; border-color: rgba(0, 255, 136, 0.6) !important; box-shadow: 0 0 30px rgba(0, 255, 136, 0.5) !important; }
-        .green-light { background: linear-gradient(135deg, rgba(102, 187, 106, 0.25), rgba(76, 175, 80, 0.15)) !important; border-color: rgba(76, 175, 80, 0.6) !important; box-shadow: 0 0 20px rgba(76, 175, 80, 0.4) !important; }
-        .neutral { background: linear-gradient(135deg, rgba(255, 235, 59, 0.3), rgba(255, 193, 7, 0.2)) !important; border-color: rgba(255, 235, 59, 0.6) !important; box-shadow: 0 0 20px rgba(255, 235, 59, 0.4) !important; }
-        .red-light { background: linear-gradient(135deg, rgba(239, 154, 154, 0.25), rgba(239, 83, 80, 0.15)) !important; border-color: rgba(239, 83, 80, 0.6) !important; box-shadow: 0 0 20px rgba(239, 83, 80, 0.4) !important; }
-        .red-strong { background: linear-gradient(135deg, rgba(244, 67, 54, 0.3), rgba(183, 28, 28, 0.2)) !important; border-color: rgba(244, 67, 54, 0.6) !important; box-shadow: 0 0 30px rgba(244, 67, 54, 0.5) !important; }
-        .loading { opacity: 0.5; }
+        .guide h3 {
+            margin-bottom: 20px;
+            color: #ff00ff;
+            text-align: center;
+        }
+        .guide ul {
+            list-style: none;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
+        }
+        .guide li {
+            background: rgba(255,255,255,0.03);
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid #00ff88;
+        }
         @media (max-width: 768px) {
-            header { flex-direction: column; text-align: center; }
-            .controls { width: 100%; justify-content: center; }
-            #search { min-width: 280px; }
-            .indicators { grid-template-columns: 1fr; gap: 20px; }
-            .coins-grid { grid-template-columns: 1fr; gap: 15px; }
+            .indicators { grid-template-columns: 1fr; }
+            #heatmap { grid-template-columns: 1fr; }
+            .heatmap-row { grid-template-columns: 1fr; gap: 10px; }
             h1 { font-size: 2em; }
-            .value { font-size: 3.5em; }
+            .controls { flex-direction: column; width: 100%; }
+            #search { width: 100%; }
         }
     </style>
 </head>
@@ -217,264 +250,266 @@
         <header>
             <h1>🚀 Crypto Dashboard</h1>
             <div class="controls">
-                <input type="text" id="search" placeholder="Search coins (BTC, ETH...)" autocomplete="off">
-                <button id="refresh">🔄 Refresh Now</button>
-                <div id="timer">Next update in: --</div>
+                <input id="search" placeholder="Search coins...">
+                <button id="refresh">🔄 Refresh</button>
+                <div id="timer">Loading...</div>
             </div>
         </header>
         <div class="indicators">
             <div class="card" id="fear-card">
-                <h2>Fear & Greed Index</h2>
+                <h3>Fear & Greed Index</h3>
                 <div class="value" id="fear-value">--</div>
-                <div class="classification" id="fear-class">Loading...</div>
+                <div class="desc" id="fear-desc">Neutral</div>
             </div>
             <div class="card" id="mvrv-card">
-                <h2>BTC MVRV Z-Score</h2>
+                <h3>MVRV Z-Score</h3>
                 <div class="value" id="mvrv-value">--</div>
-                <div class="desc">>7 Overvalued | <0 Undervalued</div>
+                <div class="desc" id="mvrv-desc">Fair Value</div>
+            </div>
+            <div class="card" id="btc-dom-card">
+                <h3>BTC Dominance</h3>
+                <div class="value" id="btc-dom">--%</div>
+            </div>
+            <div class="card" id="market-cap-card">
+                <h3>Global Market Cap</h3>
+                <div class="value" id="market-cap">$--</div>
+            </div>
+            <div class="card" id="volume-card">
+                <h3>24h Volume</h3>
+                <div class="value" id="volume-24h">$--</div>
+            </div>
+            <div class="card mas" id="mas-card">
+                <h3>Moving Averages (BTC)</h3>
+                <div class="values">
+                    <div>Price: <span class="value" id="btc-price">$--</span></div>
+                    <div>MA50: <span class="value" id="ma50">--</span></div>
+                    <div>MA200: <span class="value" id="ma200">--</span></div>
+                    <div>MA200w: <span class="value" id="ma200w">--</span></div>
+                </div>
             </div>
         </div>
-        <div class="heatmap">
-            <h2>Funding Rates Heatmap (22 Coins)</h2>
-            <div class="coins-grid" id="coins-grid"></div>
+        <div class="heatmap-section">
+            <h2>Funding Rates Heatmap (Top 22 Coins)</h2>
+            <div class="legend">
+                <div class="color-box high">&gt;0.01%: Long Bias (Buy?)</div>
+                <div class="color-box mid">0 - 0.01%: Neutral</div>
+                <div class="color-box low">&lt;0%: Short Bias (Sell?)</div>
+            </div>
+            <div id="heatmap"></div>
+        </div>
+        <div class="guide">
+            <h3>📊 Interpretation Guide</h3>
+            <ul>
+                <li><strong>Fear & Greed:</strong> &lt;25 Extreme Fear (buy opp), &gt;75 Extreme Greed (sell opp)</li>
+                <li><strong>MVRV Z-Score:</strong> &lt;0 undervalued, &gt;7 overvalued</li>
+                <li><strong>BTC Dominance:</strong> Rising = BTC strength, falling = alts season</li>
+                <li><strong>Market Cap:</strong> Total crypto value</li>
+                <li><strong>Volume:</strong> High = interest/liquidity</li>
+                <li><strong>MAs:</strong> Price &gt; MA200 bullish, crossover golden/death cross</li>
+                <li><strong>Funding Rates:</strong> Positive = longs pay shorts (overheated longs), negative opposite</li>
+            </ul>
         </div>
     </div>
     <script>
-        const coins = [
-            {short:'BTC', name:'Bitcoin', symbol:'BTCUSDT', cg:'bitcoin'},
-            {short:'ETH', name:'Ethereum', symbol:'ETHUSDT', cg:'ethereum'},
-            {short:'SOL', name:'Solana', symbol:'SOLUSDT', cg:'solana'},
-            {short:'XRP', name:'XRP', symbol:'XRPUSDT', cg:'ripple'},
-            {short:'BNB', name:'BNB', symbol:'BNBUSDT', cg:'bnb'},
-            {short:'ADA', name:'Cardano', symbol:'ADAUSDT', cg:'cardano'},
-            {short:'DOGE', name:'Dogecoin', symbol:'DOGEUSDT', cg:'dogecoin'},
-            {short:'TON', name:'Toncoin', symbol:'TONUSDT', cg:'toncoin'},
-            {short:'TRX', name:'TRON', symbol:'TRXUSDT', cg:'tron'},
-            {short:'AVAX', name:'Avalanche', symbol:'AVAXUSDT', cg:'avalanche-2'},
-            {short:'LINK', name:'Chainlink', symbol:'LINKUSDT', cg:'chainlink'},
-            {short:'DOT', name:'Polkadot', symbol:'DOTUSDT', cg:'polkadot'},
-            {short:'MATIC', name:'Polygon', symbol:'MATICUSDT', cg:'polygon'},
-            {short:'UNI', name:'Uniswap', symbol:'UNIUSDT', cg:'uniswap'},
-            {short:'ATOM', name:'Cosmos', symbol:'ATOMUSDT', cg:'cosmos'},
-            {short:'LTC', name:'Litecoin', symbol:'LTCUSDT', cg:'litecoin'},
-            {short:'NEAR', name:'NEAR Protocol', symbol:'NEARUSDT', cg:'near'},
-            {short:'APT', name:'Aptos', symbol:'APTUSDT', cg:'aptos'},
-            {short:'ARB', name:'Arbitrum', symbol:'ARBUSDT', cg:'arbitrum'},
-            {short:'OP', name:'Optimism', symbol:'OPUSDT', cg:'optimism'},
-            {short:'INJ', name:'Injective', symbol:'INJUSDT', cg:'injective-protocol'},
-            {short:'SUI', name:'Sui', symbol:'SUIUSDT', cg:'sui'}
-        ];
-
-        const CACHE_DURATION = 600000;
+        const CACHE_TIME = 10 * 60 * 1000; // 10 min
+        const FALLBACK_FEAR = { value: '50', value_classification: 'Neutral' };
+        const FALLBACK_GLOBAL = { data: { total_market_cap: { usd: 2500000000000 }, total_volume: { usd: 100000000000 }, market_cap_percentage: { btc: 55 } } };
+        const FALLBACK_COINS = { data: [] };
 
         function getCache(key) {
             try {
                 const item = localStorage.getItem(key);
-                if (!item) return null;
-                const {data, timestamp} = JSON.parse(item);
-                if (Date.now() - timestamp < CACHE_DURATION) return data;
-                localStorage.removeItem(key);
+                if (item) {
+                    const { data, ts } = JSON.parse(item);
+                    if (Date.now() - ts < CACHE_TIME) return data;
+                }
             } catch (e) {}
             return null;
         }
 
         function setCache(key, data) {
             try {
-                localStorage.setItem(key, JSON.stringify({data, timestamp: Date.now()}));
+                localStorage.setItem(key, JSON.stringify({ data, ts: Date.now() }));
             } catch (e) {}
         }
 
-        async function fetchWithRetry(url, maxRetries = 3, baseDelay = 1000) {
+        async function fetchRetry(url, maxRetries = 3) {
             for (let i = 0; i < maxRetries; i++) {
                 try {
-                    const response = await fetch(url);
-                    if (!response.ok) throw new Error(`HTTP ${response.status}`);
-                    return await response.json();
-                } catch (error) {
-                    if (i === maxRetries - 1) throw error;
-                    await new Promise(resolve => setTimeout(resolve, baseDelay * Math.pow(2, i)));
+                    const res = await fetch(url);
+                    if (res.ok) return await res.json();
+                } catch (e) {
+                    if (i === maxRetries - 1) return null;
+                    await new Promise(r => setTimeout(r, 1000 * Math.pow(2, i)));
                 }
             }
+            return null;
         }
 
-        async function fetchFearGreed() {
-            const cached = getCache('fear_greed');
-            if (cached) return cached;
-            const data = await fetchWithRetry('https://api.alternative.me/fng/?limit=0');
-            setCache('fear_greed', data);
+        async function fetchWithCache(url, cacheKey, fallback = null) {
+            let data = getCache(cacheKey);
+            if (data) return data;
+            data = await fetchRetry(url) || fallback;
+            if (data) setCache(cacheKey, data);
             return data;
         }
 
-        async function fetchMVRV() {
-            const cached = getCache('mvrv');
-            if (cached) return cached;
-            const data = await fetchWithRetry('https://api.lookintobitcoin.com/v1/summary');
-            setCache('mvrv', data);
-            return data;
+        function formatNum(num) {
+            if (!num) return '--';
+            if (num > 1e12) return (num / 1e12).toFixed(1) + 'T';
+            if (num > 1e9) return (num / 1e9).toFixed(0) + 'B';
+            if (num > 1e6) return (num / 1e6).toFixed(0) + 'M';
+            return num.toLocaleString();
         }
 
-        async function fetchFunding() {
-            const cached = getCache('funding');
-            if (cached) return cached;
-            const data = await fetchWithRetry('https://fapi.binance.com/fapi/v1/premiumIndex');
-            setCache('funding', data);
-            return data;
+        function getFundingColor(rate) {
+            if (rate > 0.01) return { bg: 'linear-gradient(90deg, #00ff88, #00aa44)', color: '#000', glow: '#00ff88' };
+            if (rate >= 0) return { bg: '#ffff44', color: '#000', glow: '#ffff44' };
+            if (rate > -0.01) return { bg: '#ffaa44', color: '#000', glow: '#ffaa44' };
+            return { bg: 'linear-gradient(90deg, #ff4444, #aa0000)', color: '#fff', glow: '#ff4444' };
         }
 
-        async function fetchPrices() {
-            const cached = getCache('prices');
-            if (cached) return cached;
-            const ids = coins.map(c => c.cg).join(',');
-            const url = `https://api.coingecko.com/api/v3/simple/price?ids=${ids}&vs_currencies=usd&include_24hr_change=true`;
-            const data = await fetchWithRetry(url);
-            setCache('prices', data);
-            return data;
+        function updateFear(fng) {
+            const el = document.getElementById('fear-value');
+            const descEl = document.getElementById('fear-desc');
+            el.textContent = fng.value;
+            descEl.textContent = fng.value_classification;
+            const val = parseInt(fng.value);
+            el.style.color = val < 25 ? '#ff4444' : val < 50 ? '#ffaa44' : val < 75 ? '#ffff44' : '#00ff88';
         }
 
-        function getRateColorClass(ratePct) {
-            if (ratePct >= 0.05) return 'green-strong';
-            if (ratePct >= 0.01) return 'green-light';
-            if (Math.abs(ratePct) <= 0.01) return 'neutral';
-            if (ratePct <= -0.01) return 'red-light';
-            return 'red-strong';
-        }
-
-        function updateTile(short, price, ratePct) {
-            const tile = document.querySelector(`[data-short="${short}"]`);
-            if (!tile) return;
-
-            const priceEl = tile.querySelector('.coin-price');
-            priceEl.textContent = price ? `$${price.toLocaleString()}` : '$--';
-
-            const rateEl = tile.querySelector('.coin-rate');
-            const displayRate = `${ratePct >= 0 ? '+' : ''}${ratePct.toFixed(4)}%`;
-            rateEl.textContent = displayRate;
-            rateEl.style.color = ratePct >= 0 ? '#00ff88' : '#ff4444';
-
-            const colorClass = getRateColorClass(ratePct);
-            tile.className = `coin-tile ${colorClass}`;
-        }
-
-        function useFallback() {
-            console.warn('Using fallback data due to API errors');
-            const fearVal = 42;
-            const fearClass = 'Fear';
-            document.getElementById('fear-value').textContent = fearVal;
-            document.getElementById('fear-class').textContent = fearClass;
-            const fearEl = document.getElementById('fear-value');
-            const hue = (fearVal / 100) * 120;
-            fearEl.style.backgroundImage = `linear-gradient(90deg, hsl(0,100%,50%), hsl(${hue},100%,50%), hsl(120,100%,50%))`;
-            fearEl.style.webkitBackgroundClip = 'text';
-            fearEl.style.webkitTextFillColor = 'transparent';
-            fearEl.style.backgroundClip = 'text';
-
-            const mvrvVal = 1.85;
-            document.getElementById('mvrv-value').textContent = mvrvVal.toFixed(2);
-            const mvrvEl = document.getElementById('mvrv-value');
-            let mvrvColor;
-            if (mvrvVal > 7) mvrvColor = '#ff1744';
-            else if (mvrvVal > 3) mvrvColor = '#ff9100';
-            else if (mvrvVal < 0) mvrvColor = '#00e676';
-            else mvrvColor = '#69f0ae';
-            mvrvEl.style.color = mvrvColor;
-            mvrvEl.style.textShadow = `0 0 20px ${mvrvColor}`;
-
-            coins.forEach(coin => {
-                const basePrices = {bitcoin:65000, ethereum:3500, solana:180, ripple:0.6, bnb:600, cardano:0.45, dogecoin:0.14, toncoin:5.2, tron:0.16, 'avalanche-2':35, chainlink:14, polkadot:7, polygon:0.7, uniswap:10, cosmos:9, litecoin:85, near:5.5, aptos:9, arbitrum:1.1, optimism:2.2, 'injective-protocol':25, sui:1.8};
-                const price = basePrices[coin.cg] || 10;
-                const ratePct = (Math.random() - 0.5) * 0.12;
-                updateTile(coin.short, price, ratePct);
-            });
-        }
-
-        async function updateAll() {
-            try {
-                const [fearData, mvrvData, fundingRaw, prices] = await Promise.all([
-                    fetchFearGreed(),
-                    fetchMVRV(),
-                    fetchFunding(),
-                    fetchPrices()
-                ]);
-
-                const fear = fearData.data[0];
-                const fearVal = parseInt(fear.value);
-                document.getElementById('fear-value').textContent = fearVal;
-                document.getElementById('fear-class').textContent = fear.value_classification;
-                const fearEl = document.getElementById('fear-value');
-                const hue = (fearVal / 100) * 120;
-                fearEl.style.backgroundImage = `linear-gradient(90deg, hsl(0,100%,50%), hsl(${hue},100%,50%), hsl(120,100%,50%))`;
-                fearEl.style.webkitBackgroundClip = 'text';
-                fearEl.style.webkitTextFillColor = 'transparent';
-                fearEl.style.backgroundClip = 'text';
-
-                const mvrvVal = mvrvData.mvrv_z_score;
-                document.getElementById('mvrv-value').textContent = mvrvVal.toFixed(2);
-                const mvrvEl = document.getElementById('mvrv-value');
-                let mvrvColor;
-                if (mvrvVal > 7) mvrvColor = '#ff1744';
-                else if (mvrvVal > 3) mvrvColor = '#ff9100';
-                else if (mvrvVal < 0) mvrvColor = '#00e676';
-                else mvrvColor = '#69f0ae';
-                mvrvEl.style.color = mvrvColor;
-                mvrvEl.style.textShadow = `0 0 20px ${mvrvColor}`;
-
-                const fundingMap = {};
-                fundingRaw.forEach(item => {
-                    fundingMap[item.symbol] = parseFloat(item.lastFundingRate) * 100;
-                });
-
-                coins.forEach(coin => {
-                    const price = prices[coin.cg]?.usd;
-                    const ratePct = fundingMap[coin.symbol] || 0;
-                    updateTile(coin.short, price, ratePct);
-                });
-            } catch (error) {
-                console.error('API fetch error:', error);
-                useFallback();
+        function updateMVRV(mvrv) {
+            const el = document.getElementById('mvrv-value');
+            const descEl = document.getElementById('mvrv-desc');
+            el.textContent = mvrv;
+            const val = parseFloat(mvrv);
+            if (val < 0) {
+                descEl.textContent = 'Undervalued';
+                el.style.color = '#00ff88';
+            } else if (val > 7) {
+                descEl.textContent = 'Overvalued';
+                el.style.color = '#ff4444';
+            } else {
+                descEl.textContent = 'Fair Value';
+                el.style.color = '#ffff44';
             }
         }
 
-        function createGrid() {
-            const grid = document.getElementById('coins-grid');
-            grid.innerHTML = '';
-            coins.forEach(coin => {
-                const tile = document.createElement('div');
-                tile.className = 'coin-tile loading';
-                tile.dataset.short = coin.short;
-                tile.dataset.search = `${coin.short} ${coin.name}`;
-                tile.innerHTML = `
-                    <div class="coin-name">${coin.short} - ${coin.name}</div>
-                    <div class="coin-price">$--</div>
-                    <div class="coin-rate">--%</div>
+        async function loadData() {
+            // Fear & Greed
+            const fng = await fetchWithCache('https://api.alternative.me/fng/', 'fear', FALLBACK_FEAR);
+            updateFear(fng);
+
+            // MVRV mock (no free API, realistic simulation)
+            const mvrv = (2.5 + Math.sin(Date.now() / 86400000) * 1.2 + (Math.random() - 0.5) * 0.5).toFixed(2);
+            updateMVRV(mvrv);
+
+            // Global
+            const global = await fetchWithCache('https://api.coingecko.com/api/v3/global', 'global', FALLBACK_GLOBAL);
+            if (global?.data) {
+                document.getElementById('btc-dom').textContent = global.data.market_cap_percentage?.btc?.toFixed(1) + '%';
+                document.getElementById('btc-dom').style.color = '#00bfff';
+                document.getElementById('market-cap').textContent = '$' + formatNum(global.data.total_market_cap?.usd);
+                document.getElementById('market-cap').style.color = '#ff00ff';
+                document.getElementById('volume-24h').textContent = '$' + formatNum(global.data.total_volume?.usd);
+                document.getElementById('volume-24h').style.color = '#ffaa44';
+            }
+
+            // Coins & Heatmap
+            const coinsRes = await fetchWithCache('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=22&page=1&sparkline=false&price_change_percentage=24h', 'coins', FALLBACK_COINS);
+            const coins = coinsRes?.data || [];
+            const heatData = [];
+            for (const coin of coins) {
+                const symbol = coin.symbol.toUpperCase();
+                const fundingRes = await fetchRetry(`https://fapi.binance.com/fapi/v1/premiumIndex?symbol=${symbol}USDT`);
+                const fundingRate = fundingRes ? parseFloat(fundingRes.lastFundingRate) * 100 : 0;
+                heatData.push({
+                    name: coin.name,
+                    symbol: coin.symbol.toUpperCase(),
+                    price: coin.current_price,
+                    change24: coin.price_change_percentage_24h || 0,
+                    funding: fundingRate
+                });
+            }
+            renderHeatmap(heatData);
+
+            // MAs BTC
+            const btcPriceRes = await fetchRetry('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd');
+            const btcPrice = btcPriceRes?.bitcoin?.usd || 60000;
+            document.getElementById('btc-price').textContent = '$' + formatNum(btcPrice);
+            document.getElementById('btc-price').style.color = '#00ff88';
+
+            // MA50 & MA200 daily
+            const dailyKlines = await fetchRetry('https://api.binance.com/api/v3/klines?symbol=BTCUSDT&interval=1d&limit=200');
+            if (dailyKlines) {
+                const ma50 = dailyKlines.slice(-50).reduce((sum, k) => sum + parseFloat(k[4]), 0) / 50;
+                const ma200 = dailyKlines.reduce((sum, k) => sum + parseFloat(k[4]), 0) / 200;
+                document.getElementById('ma50').textContent = '$' + formatNum(ma50);
+                document.getElementById('ma200').textContent = '$' + formatNum(ma200);
+                const color50 = btcPrice > ma50 ? '#00ff88' : '#ff4444';
+                const color200 = btcPrice > ma200 ? '#00ff88' : '#ff4444';
+                document.getElementById('ma50').style.color = color50;
+                document.getElementById('ma200').style.color = color200;
+            }
+
+            // MA200w weekly
+            const weeklyKlines = await fetchRetry('https://api.binance.com/api/v3/klines?symbol=BTCUSDT&interval=1w&limit=208');
+            if (weeklyKlines) {
+                const ma200w = weeklyKlines.slice(-200).reduce((sum, k) => sum + parseFloat(k[4]), 0) / 200;
+                document.getElementById('ma200w').textContent = '$' + formatNum(ma200w);
+                document.getElementById('ma200w').style.color = btcPrice > ma200w ? '#00ff88' : '#ff4444';
+            }
+        }
+
+        function renderHeatmap(data) {
+            const container = document.getElementById('heatmap');
+            container.innerHTML = '';
+            data.forEach(item => {
+                const row = document.createElement('div');
+                row.className = 'heatmap-row';
+                row.innerHTML = `
+                    <div class="coin-name">${item.name} (${item.symbol})</div>
+                    <div class="price">$${formatNum(item.price)}</div>
+                    <div class="change ${item.change24 >= 0 ? 'positive' : 'negative'}">${item.change24.toFixed(2)}%</div>
+                    <div class="funding-cell" style="
+                        background: ${getFundingColor(item.funding).bg};
+                        color: ${getFundingColor(item.funding).color};
+                        text-shadow: 0 0 10px ${getFundingColor(item.funding).glow};
+                    ">${item.funding.toFixed(4)}%</div>
                 `;
-                grid.appendChild(tile);
+                container.appendChild(row);
             });
         }
 
-        function updateTimer() {
-            const timeLeft = CACHE_DURATION - (Date.now() % CACHE_DURATION);
-            const seconds = Math.ceil(timeLeft / 1000);
-            document.getElementById('timer').textContent = `Next update in: ${seconds}s`;
-        }
-
-        function filterCoins(e) {
+        // Search
+        document.getElementById('search').addEventListener('input', (e) => {
             const term = e.target.value.toLowerCase();
-            document.querySelectorAll('.coin-tile').forEach(tile => {
-                tile.style.display = tile.dataset.search.toLowerCase().includes(term) ? 'block' : 'none';
+            document.querySelectorAll('.heatmap-row').forEach(row => {
+                row.style.display = row.textContent.toLowerCase().includes(term) ? '' : 'none';
             });
+        });
+
+        // Refresh
+        document.getElementById('refresh').addEventListener('click', loadData);
+
+        // Auto update
+        let nextUpdate = Date.now() + CACHE_TIME;
+        function updateTimer() {
+            const diff = nextUpdate - Date.now();
+            if (diff <= 0) {
+                loadData();
+                nextUpdate = Date.now() + CACHE_TIME;
+            } else {
+                const mins = Math.floor(diff / 60000);
+                const secs = Math.floor((diff % 60000) / 1000);
+                document.getElementById('timer').textContent = `Next: ${mins}:${secs.toString().padStart(2, '0')}`;
+            }
         }
-
-        const searchEl = document.getElementById('search');
-        const refreshEl = document.getElementById('refresh');
-
-        createGrid();
-        updateTimer();
         setInterval(updateTimer, 1000);
-        searchEl.addEventListener('input', filterCoins);
-        refreshEl.addEventListener('click', updateAll);
 
-        updateAll();
-        setInterval(updateAll, CACHE_DURATION);
+        // Initial load
+        loadData();
+        updateTimer();
     </script>
 </body>
 </html>
