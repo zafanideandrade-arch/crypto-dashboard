@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crypto Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 50%, #16213e 100%);
+            color: #ffffff;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            background: linear-gradient(45deg, #00f5ff, #a855f7, #00ff88);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            text-shadow: 0 0 20px rgba(0, 245, 255, 0.5);
+        }
+
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        #search {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 25px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            color: white;
+            font-size: 16px;
+            width: 300px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        #search::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .refresh-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        #refresh-btn {
+            padding: 12px 24px;
+            background: linear-gradient(45deg, #00f5ff, #a855f7);
+            border: none;
+            border-radius: 25px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        #refresh-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0, 245, 255, 0.4);
+        }
+
+        #next-update {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .indicators {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .indicator-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s;
+        }
+
+        .indicator-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .indicator-title {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .indicator-value {
+            font-size: 3rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, var(--indicator-color), var(--indicator-color-lighter));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+
+        .indicator-class {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        #heatmap {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 20px;
+        }
+
+        .coin-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .coin-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .coin-card h3 {
+            font-size: 1.8rem;
+            color: #00f5ff;
+        }
+
+        .price {
+            font-size: 2.2rem;
+            font-weight: bold;
+            color: #ffffff;
+        }
+
+        .change {
+            font-size: 1.4rem;
+            font-weight: bold;
+            padding: 8px 16px;
+            border-radius: 20px;
+            background: rgba(16, 185, 129, 0.2);
+        }
+
+        .funding {
+            font-size: 1.6rem;
+            font-weight: bold;
+            padding: 15px 25px;
+            border-radius: 15px;
+            text-align: center;
+            min-width: 120px;
+        }
+
+        @media (max-width: 768px) {
+            #heatmap {
+                grid-template-columns: 1fr;
+            }
+
+            .controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            #search {
+                width: 100%;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+        }
+
+        #spinner {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            z-index: 1000;
+        }
+
+        .spinner {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid #00f5ff;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        #error {
+            background: rgba(220, 38, 38, 0.2);
+            border: 1px solid #dc2626;
+            color: #fca5a5;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: none;
+            text-align: center;
+        }
+
+        .glass {
+            position: relative;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🪙 Crypto Dashboard</h1>
+        <div id="error"></div>
+        <div class="controls">
+            <input type="text" id="search" placeholder="Search coins (e.g., BTC, ETH)...">
+            <div class="refresh-container">
+                <button id="refresh-btn">🔄 Refresh</button>
+                <span id="next-update">Loading...</span>
+            </div>
+        </div>
+        <div class="indicators">
+            <div id="fg-card" class="indicator-card glass">
+                <div class="indicator-title">Fear & Greed Index</div>
+                <div id="fg-value" class="indicator-value">--</div>
+                <div id="fg-class" class="indicator-class">--</div>
+            </div>
+            <div id="mvrv-card" class="indicator-card glass">
+                <div class="indicator-title">BTC MVRV Z-Score</div>
+                <div id="mvrv-value" class="indicator-value">--</div>
+            </div>
+        </div>
+        <div id="heatmap"></div>
+    </div>
+
+    <div id="spinner">
+        <div class="spinner"></div>
+        <div style="margin-top: 20px; color: white;">Loading data...</div>
+    </div>
+
+    <script>
+        const coins = [
+            {id: 'bitcoin', symbol: 'BTC', binance: 'BTC'},
+            {id: 'ethereum', symbol: 'ETH', binance: 'ETH'},
+            {id: 'solana', symbol: 'SOL', binance: 'SOL'},
+            {id: 'ripple', symbol: 'XRP', binance: 'XRP'},
+            {id: 'bnb', symbol: 'BNB', binance: 'BNB'},
+            {id: 'cardano', symbol: 'ADA', binance: 'ADA'},
+            {id: 'dogecoin', symbol: 'DOGE', binance: 'DOGE'},
+            {id: 'toncoin', symbol: 'TON', binance: 'TON'},
+            {id: 'tron', symbol: 'TRX', binance: 'TRX'},
+            {id: 'avalanche-2', symbol: 'AVAX', binance: 'AVAX'},
+            {id: 'chainlink', symbol: 'LINK', binance: 'LINK'},
+            {id: 'polkadot', symbol: 'DOT', binance: 'DOT'},
+            {id: 'polygon', symbol: 'MVR', binance: 'MATIC'},
+            {id: 'uniswap', symbol: 'UNI', binance: 'UNI'},
+            {id: 'cosmos', symbol: 'ATOM', binance: 'ATOM'},
+            {id: 'litecoin', symbol: 'LTC', binance: 'LTC'},
+            {id: 'near', symbol: 'NEAR', binance: 'NEAR'},
+            {id: 'aptos', symbol: 'APT', binance: 'APT'},
+            {id: 'arbitrum', symbol: 'ARB', binance: 'ARB'},
+            {id: 'optimism', symbol: 'OP', binance: 'OP'},
+            {id: 'injective-protocol', symbol: 'INJ', binance: 'INJ'},
+            {id: 'sui', symbol: 'SUI', binance: 'SUI'}
+        ];
+
+        const idsStr = coins.map(c => c.id).join(',');
+        const coingeckoUrl = `https://api.coingecko.com/api/v3/simple/price?ids=${idsStr}&vs_currencies=usd&include_24hr_change=true`;
+
+        function getCachedData() {
+            const dataStr = localStorage.getItem('cryptoData');
+            if (!dataStr) return null;
+            const data = JSON.parse(dataStr);
+            if (Date.now() - data.timestamp < 5 * 60 * 1000) {
+                return data;
+            }
+            return null;
+        }
+
+        function getFundingColor(rate) {
+            if (rate === null || isNaN(rate)) return '#6b7280';
+            if (rate >= 0.05) return '#059669';
+            if (rate >= 0.01) return '#10b981';
+            if (rate > -0.01) return '#eab308';
+            if (rate > -0.05) return '#ef4444';
+            return '#dc2626';
+        }
+
+        async function fetchData() {
+            const spinner = document.getElementById('spinner');
+            const errorDiv = document.getElementById('error');
+            spinner.style.display = 'flex';
+            errorDiv.style.display = 'none';
+
+            try {
+                const pricePromise = fetch(coingeckoUrl).then(r => r.json());
+                const fundingPromises = coins.map(c => 
+                    fetch(`https://fapi.binance.com/fapi/v1/premiumIndex?symbol=${c.binance}USDT`)
+                        .then(r => r.json())
+                        .catch(() => null)
+                );
+                const fgPromise = fetch('https://api.alternative.me/fgi/?limit=1').then(r => r.json());
+                const mvrvPromise = fetch('https://api.lookintobitcoin.com/v1/mvrv_zscore').then(r => r.json());
+
+                const [prices, fundingsRaw, fgData, mvrvData] = await Promise.all([
+                    pricePromise,
+                    Promise.all(fundingPromises),
+                    fgPromise,
+                    mvrvPromise
+                ]);
+
+                const fundings = coins.map((coin, i) => {
+                    const raw = fundingsRaw[i];
+                    let fundingPercent = null;
+                    if (raw && raw.lastFundingRate) {
+                        fundingPercent = parseFloat(raw.lastFundingRate) * 100;
+                    }
+                    return { coin, fundingPercent };
+                });
+
+                const data = {
+                    prices,
+                    fundings,
+                    fg: fgData.data[0],
+                    mvrv: mvrvData.values[0],
+                    timestamp: Date.now()
+                };
+
+                localStorage.setItem('cryptoData', JSON.stringify(data));
+                updateUI(data);
+                updateTimer();
+            } catch (e) {
+                document.getElementById('error').textContent = `Error loading data: ${e.message}`;
+                document.getElementById('error').style.display = 'block';
+            } finally {
+                spinner.style.display = 'none';
+            }
+        }
+
+        function updateUI(data) {
+            // Indicators
+            const fgValue = data.fg.value;
+            const fgClass = data.fg.value_classification;
+            document.getElementById('fg-value').textContent = fgValue;
+            document.getElementById('fg-class').textContent = fgClass;
+            let fgColor = '#eab308';
+            if (fgValue < 25) fgColor = '#dc2626';
+            else if (fgValue < 50) fgColor = '#f97316';
+            else if (fgValue < 75) fgColor = '#10b981';
+            else fgColor = '#059669';
+            document.getElementById('fg-card').style.setProperty('--indicator-color', fgColor);
+
+            const mvrvValue = data.mvrv.y.toFixed(2);
+            document.getElementById('mvrv-value').textContent = mvrvValue;
+            let mvrvColor = '#eab308';
+            if (parseFloat(mvrvValue) < 0) mvrvColor = '#059669';
+            else if (parseFloat(mvrvValue) < 3) mvrvColor = '#10b981';
+            else if (parseFloat(mvrvValue) < 7) mvrvColor = '#f97316';
+            else mvrvColor = '#dc2626';
+            document.getElementById('mvrv-card').style.setProperty('--indicator-color', mvrvColor);
+
+            // Heatmap
+            const container = document.getElementById('heatmap');
+            container.innerHTML = '';
+            data.fundings.forEach(({ coin, fundingPercent }) => {
+                const priceData = data.prices[coin.id];
+                if (!priceData) return;
+
+                const price = priceData.usd.toLocaleString();
+                const change24 = priceData.usd_24h_change.toFixed(2);
+                const changeColor = change24 >= 0 ? '#10b981' : '#ef4444';
+                const changeBg = change24 >= 0 ? 'rgba(16, 185, 129, 0.2)' : 'rgba(239, 68, 68, 0.2)';
+                const fundingStr = fundingPercent !== null ? fundingPercent.toFixed(4) + '%' : 'N/A';
+                const fundingColor = getFundingColor(fundingPercent);
+
+                const card = document.createElement('div');
+                card.className = 'coin-card glass';
+                card.dataset.symbol = coin.symbol;
+                card.innerHTML = `
+                    <h3>${coin.symbol}</h3>
+                    <div class="price">$${price}</div>
+                    <div class="change" style="color: ${changeColor}; background: ${changeBg}; padding: 8px 16px; border-radius: 20px; font-size: 1.4rem; font-weight: bold;">${change24 >= 0 ? '+' : ''}${change24}%</div>
+                    <div class="funding" style="background: linear-gradient(90deg, ${fundingColor}22, ${fundingColor}44); color: ${fundingColor === '#6b7280' ? '#9ca3af' : '#ffffff'}; border: 1px solid ${fundingColor}55; padding: 15px 25px; border-radius: 15px; font-size: 1.6rem; font-weight: bold; min-width: 120px;">${fundingStr}</div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function updateTimer() {
+            const dataStr = localStorage.getItem('cryptoData');
+            if (!dataStr) return;
+            const data = JSON.parse(dataStr);
+            const elapsed = Date.now() - data.timestamp;
+            const remaining = 300000 - elapsed;
+            const nextEl = document.getElementById('next-update');
+            if (remaining > 0) {
+                const min = Math.floor(remaining / 60000);
+                const sec = Math.floor((remaining % 60000) / 1000).toString().padStart(2, '0');
+                nextEl.textContent = `Next auto-update: ${min}:${sec}`;
+            } else {
+                nextEl.textContent = 'Updating soon...';
+            }
+        }
+
+        function loadData() {
+            const cached = getCachedData();
+            if (cached) {
+                updateUI(cached);
+                updateTimer();
+                return;
+            }
+            fetchData();
+        }
+
+        // Event listeners
+        document.getElementById('search').addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase();
+            document.querySelectorAll('.coin-card').forEach(card => {
+                card.style.display = card.dataset.symbol.toLowerCase().includes(query) ? 'flex' : 'none';
+            });
+        });
+
+        document.getElementById('refresh-btn').addEventListener('click', fetchData);
+
+        // Init
+        loadData();
+        setInterval(fetchData, 300000);
+        setInterval(updateTimer, 1000);
+    </script>
+</body>
+</html>
